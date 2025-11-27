@@ -1,15 +1,14 @@
 // src/validations/user.validation.js
 import Joi from 'joi';
 
-const username = Joi.string()
+const name = Joi.string()
     .min(3)
     .max(100)
     .trim()
     .required()
     .messages({
-        'string.min': 'Username minimal 3 karakter',
-        'string.max': 'Username maksimal 100 karakter',
-        'any.required': 'Username wajib diisi',
+        'string.min': 'name minimal 3 karakter',
+        'any.required': 'name wajib diisi',
     });
 
 const email = Joi.string()
@@ -32,12 +31,26 @@ const password = Joi.string()
         'any.required': 'Password wajib diisi',
     });
 
+const jabatan = Joi.string().max(100).trim().required().messages({
+    'any.required': 'Jabatan wajib diisi',
+});
+
+const telp = Joi.number().integer().min(1000000).max(999999999999).required().messages({
+    'number.base': 'No telepon harus angka',
+    'any.required': 'No telepon wajib diisi',
+});
+
+const profile = Joi.string().uri().allow('').optional();
+
 // REGISTER
 export const addUserValidation = Joi.object({
-    username,
+    name,
     email,
-    password,
-});
+    password: password.optional(),
+    jabatan,
+    telp: telp,
+    profile: Joi.string().uri().optional().allow('').default(null),
+}).required();
 
 // LOGIN
 export const loginUserValidation = Joi.object({
@@ -58,13 +71,19 @@ export const getUserValidation = Joi.string()
 
 // UPDATE USER (hanya yang diisi saja)
 export const updateUserValidation = Joi.object({
-    username: username.optional(),
+    name: name.optional(),
     email: email.optional(),
-    password: Joi.string()
+    jabatan: jabatan.optional(),
+    telp: telp.optional(),
+    profile: profile.optional(),
+    password: password.optional(),
+    currentPassword: Joi.string()
         .min(6)
-        .max(100)
-        .optional()
-        .messages({
-            'string.min': 'Password baru minimal 6 karakter',
+        .when('password', {
+            is: Joi.exist().not(null),
+            then: Joi.required().messages({
+                'any.required': 'Current password wajib diisi untuk ganti password',
+            }),
+            otherwise: Joi.forbidden(),       // kalau password kosong → currentPassword dilarang
         }),
 }).min(1); // minimal 1 field diisi
