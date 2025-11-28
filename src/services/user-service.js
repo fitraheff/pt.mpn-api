@@ -71,13 +71,13 @@ const login = async (request) => {
         return next(new ResponseError(401, 'Invalid email or password'));
     }
 
-    const accessToken = generateAccessToken({
+    const token = generateAccessToken({
         userId: user.id,
         role: user.role,
     });
 
     return {
-        accessToken,
+        token,
         user: {
             id: user.id,
             name: user.name,
@@ -144,7 +144,6 @@ const update = async (req, userId) => {
             id: true,
             name: true,
             email: true,
-            jabatan: true,
             telp: true,
             profile: true,
             updatedAt: true,

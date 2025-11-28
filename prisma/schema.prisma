@@ -9,7 +9,6 @@ datasource db {
 
 enum Role {
   ADMIN
-//  USER
   SUPERADMIN
 }
 
@@ -19,7 +18,7 @@ model User {
   email     String    @unique @db.VarChar(255)
   password  String    @db.VarChar(255) 
   role      Role      @default(ADMIN)
-//  jabatan   String    @db.VarChar(100)
+  token     String?   @db.VarChar(100)
   telp      Int       
   profile   String?
 
