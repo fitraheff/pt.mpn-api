@@ -60,13 +60,13 @@ export const loginUserValidation = Joi.object({
 });
 
 // GET USER BY ID (params)
-export const getUserValidation = Joi.string()
-    .uuid({ version: ['uuidv4'] })
-    .required()
-    .messages({
-        'string.guid': 'ID user tidak valid',
-        'any.required': 'ID user wajib diisi',
-    });
+// export const getUserValidation = Joi.string()
+//     .uuid({ version: ['uuidv4'] })
+//     .required()
+//     .messages({
+//         'string.guid': 'ID user tidak valid',
+//         'any.required': 'ID user wajib diisi',
+//     });
 
 // UPDATE USER (hanya yang diisi saja)
 export const updateUserValidation = Joi.object({

@@ -114,10 +114,7 @@ src/
 ---
 
 ## 🚀 9. Kontak & Bantuan
-Jika membutuhkan bantuan, gunakan:
-- GitHub Issues
-- Grup komunikasi tim
-- Ping reviewer jika PR butuh peninjauan cepat
+- Cek ke repo githubnya pt.mpn terus buat git pull requenst
 
 ---
 Tekan Ctrl + Shift + V (Windows/Linux) atau Cmd + Shift + V (Mac) → langsung muncul preview di panel baru.
