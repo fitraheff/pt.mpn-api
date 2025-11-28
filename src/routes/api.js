@@ -5,12 +5,12 @@ import { authMiddleware, authSuperadminMiddleware } from "../middleware/auth-mid
 const userRouter = express.Router();
 
 userRouter.post("/login", userController.login);
+userRouter.post("/add", userController.add);
 
 userRouter.use(authMiddleware);
-// userRouter.put("/update/:id", userController.update);
+userRouter.put("/update", userController.update);
 
 userRouter.use(authSuperadminMiddleware);
-userRouter.post("/add", userController.add);
 
 export {
     userRouter
