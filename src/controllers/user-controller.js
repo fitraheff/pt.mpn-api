@@ -34,24 +34,17 @@ const login = async (req, res, next) => {
 //     }
 // }
 
-// const update = async (req, res, next) => {
-//     try {
-//         const id = req.user.id;
-//         const request = req.params;
-//         request.id = id;
-
-//         if (req.user.id !== request.id) {
-//             throw new ResponseError(403, "Forbidden");
-//         }
-
-//         const result = await userService.update(request);
-//         res.status(200).json({
-//             data: result
-//         });
-//     } catch (e) {
-//         next(e);
-//     }
-// }
+const update = async (req, res, next) => {
+    try {
+        const result = await userService.update(req.body, req.user.id || req.params.id);
+        res.status(200).json({
+            message: "Profile berhasil diperbarui",
+            data: result
+        });
+    } catch (e) {
+        next(e);
+    }
+}
 
 // const logout = async (req, res, next) => {
 //     try {
@@ -68,6 +61,6 @@ export default {
     add,
     login,
     // get,
-    // update,
+    update,
     // logout
 }

@@ -1,4 +1,3 @@
-// src/validations/user.validation.js
 import Joi from 'joi';
 
 const name = Joi.string()
@@ -31,9 +30,9 @@ const password = Joi.string()
         'any.required': 'Password wajib diisi',
     });
 
-const jabatan = Joi.string().max(100).trim().required().messages({
-    'any.required': 'Jabatan wajib diisi',
-});
+// const jabatan = Joi.string().max(100).trim().required().messages({
+//     'any.required': 'Jabatan wajib diisi',
+// });
 
 const telp = Joi.number().integer().min(1000000).max(999999999999).required().messages({
     'number.base': 'No telepon harus angka',
@@ -47,7 +46,7 @@ export const addUserValidation = Joi.object({
     name,
     email,
     password: password.optional(),
-    jabatan,
+    // jabatan,
     telp: telp,
     profile: Joi.string().uri().optional().allow('').default(null),
 }).required();
@@ -73,7 +72,7 @@ export const getUserValidation = Joi.string()
 export const updateUserValidation = Joi.object({
     name: name.optional(),
     email: email.optional(),
-    jabatan: jabatan.optional(),
+    // jabatan: jabatan.optional(),
     telp: telp.optional(),
     profile: profile.optional(),
     password: password.optional(),
@@ -87,3 +86,8 @@ export const updateUserValidation = Joi.object({
             otherwise: Joi.forbidden(),       // kalau password kosong → currentPassword dilarang
         }),
 }).min(1); // minimal 1 field diisi
+
+// export const updateUserByAdminValidation = Joi.object({
+//     jabatan: Joi.string().max(100).trim().optional(),
+//     role: Joi.string().valid('ADMIN', 'SUPERADMIN').optional(),
+// }).min(1);

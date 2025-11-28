@@ -107,67 +107,50 @@ const login = async (request) => {
 //     return user;
 // }
 
-// const update = async (request) => {
-//     const user = validate(updateUserValidation, request);
+const update = async (req, userId) => {
+    const user = validate(updateUserValidation, req);
 
-//     const totalUserInDatabase = await prismaClient.user.findUnique({
-//         where: {
-//             id: user.id
-//         },
-//         select: {
-//             name: true,
-//             email: true,
-//             jabatan: true,
-//             telp: true,
-//             profile: true,
-//             password: true
-//         }
-//     });
+    const totalUserInDatabase = await prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    });
 
-//     if (!totalUserInDatabase) {
-//         throw new ResponseError(404, "user is not found");
-//     }
+    if (!totalUserInDatabase) {
+        throw new ResponseError(404, "user is not found");
+    }
 
-//     const data = {};
-//     if (user.name) {
-//         data.name = user.name;
-//     }
-//     if (user.email) {
-//         data.email = user.email;
-//     }
-//     if (user.jabatan) {
-//         data.jabatan = user.jabatan;
-//     }
-//     if (user.telp) {
-//         data.telp = user.telp;
-//     }
-//     if (user.profile) {
-//         data.profile = user.profile;
-//     }
-//     if (user.password) {
-//         data.password = await bcrypt.compare(user.password, totalUserInDatabase.password);
-//         if (!data.password) {
-//             throw new ResponseError(400, "current password is incorrect");
-//         }
-//         data.password = await bcrypt.hash(user.password, 10);
-//     }
+    const data = {};
 
-//     return prisma.user.update({
-//         where: {
-//             id: user.id
-//         },
-//         data: data  ,
-//         select: {
-//             id: true,
-//             name: true,
-//             email: true,
-//             jabatan: true,
-//             telp: true,
-//             profile: true,
-//             updatedAt: true,
-//         }
-//     })
-// }
+    if (user.name) data.name = user.name;
+    if (user.email) data.email = user.email;
+    if (user.telp !== undefined) data.telp = user.telp;
+    if (user.profile !== undefined) data.profile = user.profile || null;
+
+    if (user.password) {
+        data.password = await bcrypt.compare(user.currentPassword, totalUserInDatabase.password);
+        if (!data.password) {
+            throw new ResponseError(400, "current password is incorrect");
+        }
+        data.password = await bcrypt.hash(user.password, 12);
+    }
+
+    return prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: data,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            jabatan: true,
+            telp: true,
+            profile: true,
+            updatedAt: true,
+        }
+    })
+}
 
 // const logout = async (username) => {
 //     username = validate(getUserValidation, username);
@@ -199,6 +182,6 @@ export default {
     add,
     login,
     // get,
-    // update,
+    update,
     // logout
 }
