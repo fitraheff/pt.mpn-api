@@ -1,6 +1,6 @@
 import { validate } from "../validations/validation.js";
 import {
-    // getUserValidation,
+    getUserValidation,
     loginUserValidation,
     addUserValidation,
     updateUserValidation
@@ -8,14 +8,13 @@ import {
 import { prisma } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
-import { generateToken as generateAccessToken } from "../utils/jwt.js";
+import { generateToken } from "../utils/jwt.js";
 
 const add = async (request) => {
     const user = validate(addUserValidation, request);
 
     const countUser = await prisma.user.count({
         where: {
-            // username: user.username
             email: user.email
         }
     });
@@ -33,16 +32,14 @@ const add = async (request) => {
             name: user.name,
             email: user.email,
             password: user.password,
-            jabatan: user.jabatan,
             telp: user.telp,
             profile: user.profile || null,
-            role: 'ADMIN', 
+            role: 'ADMIN',
         },
         select: {
             id: true,
             name: true,
             email: true,
-            jabatan: true,
             telp: true,
             role: true,
             profile: true,
@@ -68,14 +65,18 @@ const login = async (request) => {
 
 
     if (!user || !(await bcrypt.compare(loginRequest.password, user.password))) {
-        return next(new ResponseError(401, 'Invalid email or password'));
+        throw new ResponseError(401, 'Invalid email or password');
     }
 
-    const token = generateAccessToken({
+    const token = generateToken({
         userId: user.id,
         role: user.role,
     });
 
+    // await prisma.user.update({
+    //     where: { id: user.id },
+    //     data: { token }
+    // });
     return {
         token,
         user: {
@@ -87,25 +88,46 @@ const login = async (request) => {
     };
 }
 
-// const get = async (username) => {
-//     username = validate(getUserValidation, username);
+const getById = async (req) => {
+    const data = validate(getUserValidation, req);
 
-//     const user = await prismaClient.user.findUnique({
-//         where: {
-//             username: username
-//         },
-//         select: {
-//             username: true,
-//             name: true
-//         }
-//     });
+    const user = await prisma.user.findUnique({
+        where: {
+            id: data
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            telp: true,
+            profile: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
 
-//     if (!user) {
-//         throw new ResponseError(404, "user is not found");
-//     }
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
 
-//     return user;
-// }
+    return user;
+}
+
+const getAll = async () => {
+    return prisma.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            telp: true,
+            profile: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+}
 
 const update = async (req, userId) => {
     const user = validate(updateUserValidation, req);
@@ -128,8 +150,8 @@ const update = async (req, userId) => {
     if (user.profile !== undefined) data.profile = user.profile || null;
 
     if (user.password) {
-        data.password = await bcrypt.compare(user.currentPassword, totalUserInDatabase.password);
-        if (!data.password) {
+        const isMatch = await bcrypt.compare(user.currentPassword, totalUserInDatabase.password);
+        if (!isMatch) {
             throw new ResponseError(400, "current password is incorrect");
         }
         data.password = await bcrypt.hash(user.password, 12);
@@ -180,7 +202,8 @@ const update = async (req, userId) => {
 export default {
     add,
     login,
-    // get,
+    getById,
+    getAll,
     update,
     // logout
 }

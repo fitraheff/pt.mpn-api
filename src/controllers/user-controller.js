@@ -22,17 +22,28 @@ const login = async (req, res, next) => {
     }
 }
 
-// const get = async (req, res, next) => {
-//     try {
-//         const username = req.user.username;
-//         const result = await userService.get(username);
-//         res.status(200).json({
-//             data: result
-//         });
-//     } catch (e) {
-//         next(e);
-//     }
-// }
+const getById = async (req, res, next) => {
+    try {
+        const userId = req.params.id || req.user.id;
+        const result = await userService.getById(userId);
+        res.status(200).json({
+            data: result
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+
+const getAll = async (req, res, next) => {
+    try {
+        const result = await userService.getAll();
+        res.status(200).json({
+            data: result
+        });
+    } catch (e) {
+        next(e);
+    }
+}
 
 const update = async (req, res, next) => {
     try {
@@ -60,7 +71,8 @@ const update = async (req, res, next) => {
 export default {
     add,
     login,
-    // get,
+    getById,
+    getAll,
     update,
     // logout
 }
