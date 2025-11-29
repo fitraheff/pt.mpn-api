@@ -27,3 +27,12 @@ model User {
 
   @@map("users")
 }
+
+model Bidang_Usaha {
+  id_BUsaha        String    @id @default(uuid())
+  nama_BUsaha      String    @db.VarChar(225)
+  deskripsi        String?   @db.Text
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
