@@ -1,10 +1,17 @@
-import { prisma } from '../application/database.js';
+import {
+    getAllBU,
+    getBUById,
+    createBU,
+    updateBU,
+    deleteBU
+    } 
+from '../services/bidang-usaha-service.js';
+import { validationBU } from '../validations/bidang-usaha-validation.js';
 
 // GET ALL
-const getAllBidangUsaha = async (req, res) => {
+export const getAllBidangUsaha = async (req, res) => {
     try {
-        const BU = await prisma.Bidang_Usaha.findMany();
-
+        const BU = await getAllBU();
         return res.json(BU);
     } catch (error) {
         console.error(error);
@@ -15,13 +22,11 @@ const getAllBidangUsaha = async (req, res) => {
 };
 
 // GET BY ID
-const getBidangUsahaById = async (req, res) => {
+export const getBidangUsahaById = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const BU = await prisma.Bidang_Usaha.findUnique({
-            where: { id_BUsaha: id }
-        });
+        const BU = await getBUById(id);
 
         if (!BU) return res.status(404).json({ message: 'ID Bidang Usaha tidak ditemukan!!' });
         return res.json(BU);
@@ -34,21 +39,19 @@ const getBidangUsahaById = async (req, res) => {
 };
 
 // CREATE
-const createBidangUsaha = async (req, res) => {
+export const createBidangUsaha = async (req, res) => {
     try {
-        const { id_BUsaha, nama_BUsaha, deskripsi } = req.body;
-
-        // ini tadi id buusahanya di apus karna kan udh di set otomatis di schema prisma pke uuid
-        if (!nama_BUsaha) {
-            return res.status(400).json({ message: 'ID dan Nama wajib diisi' });
+        const errorValidate = validationBU(req.body);
+        if (errorValidate) {
+            return res.status(400).json({ message: errorValidate });
         }
 
-        const BU = await prisma.Bidang_Usaha.create({
-            data: {
-                id_BUsaha,
-                nama_BUsaha,
-                deskripsi: deskripsi || null
-            }
+        const { id_BUsaha, nama_BUsaha, deskripsi } = req.body;
+
+        const BU = await createBU({
+            id_BUsaha,
+            nama_BUsaha,
+            deskripsi: deskripsi || null
         });
 
         return res.status(201).json(BU);
@@ -61,17 +64,14 @@ const createBidangUsaha = async (req, res) => {
 };
 
 // UPDATE
-const updateBidangUsaha = async (req, res) => {
+export const updateBidangUsaha = async (req, res) => {
     try {
         const id = req.params.id;
         const { nama_BUsaha, deskripsi } = req.body;
 
-        const BU = await prisma.Bidang_Usaha.update({
-            where: { id_BUsaha: id },
-            data: {
-                nama_BUsaha,
-                deskripsi
-            }
+        const BU = await updateBU(id, {
+            nama_BUsaha,
+            deskripsi
         });
 
         return res.json(BU);
@@ -85,13 +85,11 @@ const updateBidangUsaha = async (req, res) => {
 };
 
 // DELETE
-const deleteBidangUsaha = async (req, res) => {
+export const deleteBidangUsaha = async (req, res) => {
     try {
         const id = req.params.id;
 
-        await prisma.Bidang_Usaha.delete({
-            where: { id_BUsaha: id }
-        });
+        await deleteBU(id);
 
         return res.json({ message: 'Bidang Usaha telah di hapus' });
     } catch (error) {
