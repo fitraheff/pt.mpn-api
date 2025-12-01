@@ -9,7 +9,6 @@ datasource db {
 
 enum Role {
   ADMIN
-//  USER
   SUPERADMIN
 }
 
@@ -19,13 +18,15 @@ model User {
   email     String    @unique @db.VarChar(255)
   password  String    @db.VarChar(255) 
   role      Role      @default(ADMIN)
-  jabatan   String    @unique @db.VarChar(100)
-  telp      Int       
-  profile   String
+  telp      Int  
+  token     String?   @db.VarChar(100)     
+  //profile   String?
+  //testimoni Testimoni[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
+<<<<<<< HEAD
   @@index([email])
   @@index([name])
   @@map("users")
@@ -43,3 +44,27 @@ model Partners {
   @@index([nama_partner])
 }
 
+=======
+  @@map("users")
+}
+
+model Bidang_Usaha {
+  id_BUsaha        String    @id @default(uuid())
+  nama_BUsaha      String    @db.VarChar(225)
+  deskripsi        String?   @db.Text
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Testimoni {
+  id            String    @id @default(uuid())
+  nama          String    @unique @db.VarChar(100)
+  foto          String
+  pesan_testi   String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+//  id_users      String
+//  users         User     @relation(fields: [id_users], references: [id], onDelete: SetNull)
+}
+>>>>>>> 09a7a325b90900611dfe8926e366ea129ec14d7b

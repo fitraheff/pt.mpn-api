@@ -11,3 +11,5 @@ web.use("/api/users", userRouter);
 web.use("/api/partners", partnerRouter);
 
 web.use(errorMiddleware);
+
+web.use("/uploads", express.static("uploads"));

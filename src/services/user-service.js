@@ -1,38 +1,49 @@
 import { validate } from "../validations/validation.js";
 import {
-    // getUserValidation,
+    getUserValidation,
     loginUserValidation,
-    // registerUserValidation,
-    // updateUserValidation
+    addUserValidation,
+    updateUserValidation
 } from "../validations/user-validation.js";
 import { prisma } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
-// import { v4 as uuid } from "uuid";
+import { generateToken } from "../utils/jwt.js";
 
-// const register = async (request) => {
-//     const user = validate(registerUserValidation, request);
+const add = async (request) => {
+    const user = validate(addUserValidation, request);
 
-//     const countUser = await prismaClient.user.count({
-//         where: {
-//             username: user.username
-//         }
-//     });
+    const countUser = await prisma.user.count({
+        where: {
+            email: user.email
+        }
+    });
 
-//     if (countUser === 1) {
-//         throw new ResponseError(400, "Username already exists");
-//     }
+    if (countUser === 1) {
+        throw new ResponseError(400, "email already exists");
+    }
 
-//     user.password = await bcrypt.hash(user.password, 10);
+    const password = "123456"; // default password
 
-//     return prismaClient.user.create({
-//         data: user,
-//         select: {
-//             username: true,
-//             name: true
-//         }
-//     });
-// }
+    user.password = await bcrypt.hash(password, 10);
+
+    return await prisma.user.create({
+        data: {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            telp: user.telp,
+            role: 'ADMIN',
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            telp: true,
+            role: true,
+        },
+    });
+}
 
 const login = async (request) => {
     const loginRequest = validate(loginUserValidation, request);
@@ -43,7 +54,7 @@ const login = async (request) => {
         },
         select: {
             id: true,
-            username: true,
+            name: true,
             email: true,
             password: true,
             role: true
@@ -52,77 +63,109 @@ const login = async (request) => {
 
 
     if (!user || !(await bcrypt.compare(loginRequest.password, user.password))) {
-        return next(new ResponseError(401, 'Invalid email or password'));
+        throw new ResponseError(401, 'Invalid email or password');
     }
 
-    const accessToken = generateAccessToken({
+    const token = generateToken({
         userId: user.id,
         role: user.role,
     });
 
+    // await prisma.user.update({
+    //     where: { id: user.id },
+    //     data: { token }
+    // });
     return {
-        accessToken,
+        token,
         user: {
             id: user.id,
-            username: user.username,
+            name: user.name,
             email: user.email,
             role: user.role,
         },
     };
 }
 
-// const get = async (username) => {
-//     username = validate(getUserValidation, username);
+const getById = async (req) => {
+    const data = validate(getUserValidation, req);
 
-//     const user = await prismaClient.user.findUnique({
-//         where: {
-//             username: username
-//         },
-//         select: {
-//             username: true,
-//             name: true
-//         }
-//     });
+    const user = await prisma.user.findUnique({
+        where: {
+            id: data
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            telp: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
 
-//     if (!user) {
-//         throw new ResponseError(404, "user is not found");
-//     }
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
 
-//     return user;
-// }
+    return user;
+}
 
-// const update = async (request) => {
-//     const user = validate(updateUserValidation, request);
+const getAll = async () => {
+    return prisma.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            telp: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+}
 
-//     const totalUserInDatabase = await prismaClient.user.count({
-//         where: {
-//             username: user.username
-//         }
-//     });
+const update = async (req, userId) => {
+    const user = validate(updateUserValidation, req);
 
-//     if (totalUserInDatabase !== 1) {
-//         throw new ResponseError(404, "user is not found");
-//     }
+    const totalUserInDatabase = await prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    });
 
-//     const data = {};
-//     if (user.name) {
-//         data.name = user.name;
-//     }
-//     if (user.password) {
-//         data.password = await bcrypt.hash(user.password, 10);
-//     }
+    if (!totalUserInDatabase) {
+        throw new ResponseError(404, "user is not found");
+    }
 
-//     return prismaClient.user.update({
-//         where: {
-//             username: user.username
-//         },
-//         data: data,
-//         select: {
-//             username: true,
-//             name: true
-//         }
-//     })
-// }
+    const data = {};
+
+    if (user.name) data.name = user.name;
+    if (user.email) data.email = user.email;
+    if (user.telp !== undefined) data.telp = user.telp;
+
+    if (user.password) {
+        const isMatch = await bcrypt.compare(user.currentPassword, totalUserInDatabase.password);
+        if (!isMatch) {
+            throw new ResponseError(400, "current password is incorrect");
+        }
+        data.password = await bcrypt.hash(user.password, 12);
+    }
+
+    return prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: data,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            telp: true,
+            updatedAt: true,
+        }
+    })
+}
 
 // const logout = async (username) => {
 //     username = validate(getUserValidation, username);
@@ -151,9 +194,10 @@ const login = async (request) => {
 // }
 
 export default {
-    // register,
+    add,
     login,
-    // get,
-    // update,
+    getById,
+    getAll,
+    update,
     // logout
 }
