@@ -33,7 +33,6 @@ const add = async (request) => {
             email: user.email,
             password: user.password,
             telp: user.telp,
-            profile: user.profile || null,
             role: 'ADMIN',
         },
         select: {
@@ -42,7 +41,6 @@ const add = async (request) => {
             email: true,
             telp: true,
             role: true,
-            profile: true,
         },
     });
 }
@@ -101,7 +99,6 @@ const getById = async (req) => {
             email: true,
             role: true,
             telp: true,
-            profile: true,
             createdAt: true,
             updatedAt: true
         }
@@ -122,7 +119,6 @@ const getAll = async () => {
             email: true,
             role: true,
             telp: true,
-            profile: true,
             createdAt: true,
             updatedAt: true
         }
@@ -147,7 +143,6 @@ const update = async (req, userId) => {
     if (user.name) data.name = user.name;
     if (user.email) data.email = user.email;
     if (user.telp !== undefined) data.telp = user.telp;
-    if (user.profile !== undefined) data.profile = user.profile || null;
 
     if (user.password) {
         const isMatch = await bcrypt.compare(user.currentPassword, totalUserInDatabase.password);
@@ -167,7 +162,6 @@ const update = async (req, userId) => {
             name: true,
             email: true,
             telp: true,
-            profile: true,
             updatedAt: true,
         }
     })

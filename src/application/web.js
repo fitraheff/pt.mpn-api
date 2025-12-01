@@ -8,3 +8,5 @@ web.use(express.json());
 web.use(userRouter);
 
 web.use(errorMiddleware);
+
+web.use("/uploads", express.static("uploads"));
