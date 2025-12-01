@@ -1,5 +1,6 @@
 import joi from "joi";
 
+// Rules
 const partnerName = joi.string()
     .min(2)
     .max(250)
@@ -26,8 +27,8 @@ const partnerDesc = joi.string()
 
 // Create
 export const createPartnerValidation = joi.object({
-    name: partnerName,
-    description: partnerDesc,
+    nama_partner: partnerName,
+    deskripsi: partnerDesc,
 })
 
 // GetById
@@ -40,8 +41,9 @@ export const getPartnerByIdValidation = joi.string()
         "string.uuid": "Id tidak valid",
         "any.required": "Id wajib diisi",
     })
+
 // Update
 export const updatePartnerValidation = joi.object({
-    name: partnerName,
-    description: partnerDesc,
+    nama_partner: partnerName.optional(),
+    deskripsi: partnerDesc.optional(),
 })
