@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+
 import { validate } from "../validations/validation.js";
 import { prisma } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
@@ -80,13 +83,13 @@ const getById = async (id) => {
 
 // UPDATE PARTNER
 const update = async (request) => {
-    // Validasi text yang dikirm
+    // Validasi text
     const partnerData = validate(updatePartnerValidation, {
         nama_partner: request.nama_partner,
         deskripsi: request.deskripsi,
     });
 
-    // validasi ID
+    // Validasi ID
     const partnerID = validate(getPartnerByIdValidation, request.id);
 
     // Cek apakah partner ada?
@@ -98,20 +101,32 @@ const update = async (request) => {
         throw new ResponseError(404, "Partner not found");
     }
 
+    // Jika ada upload logo baru → hapus logo lama
+    if (request.logo) {
+        const oldFilePath = path.join("uploads", existingPartner.logo);
+
+        if (fs.existsSync(oldFilePath)) {
+            fs.unlinkSync(oldFilePath); // hapus file lama
+        }
+    }
+
     // Siapkan data update
     const data = {};
+
     if (partnerData.nama_partner !== undefined) {
         data.nama_partner = partnerData.nama_partner;
     }
 
     if (partnerData.deskripsi !== undefined) {
         data.deskripsi = partnerData.deskripsi;
-    }   
+    }
 
+    // update logo jika upload baru
     if (request.logo) {
         data.logo = request.logo;
     }
 
+    // Update ke database
     return prisma.partners.update({
         where: { id: partnerID },
         data,
@@ -126,10 +141,12 @@ const update = async (request) => {
     });
 };
 
+
 // DELETE PARTNER
 const remove = async (id) => {
     id = validate(getPartnerByIdValidation, id);
 
+    // cek data lama
     const partner = await prisma.partners.findUnique({
         where: { id },
     });
@@ -138,14 +155,24 @@ const remove = async (id) => {
         throw new ResponseError(404, "Partner not found");
     }
 
+    // hapus file lama
+    const filePath = path.join("uploads", partner.logo);
+
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+    }
+
+    // hapus data di db
     await prisma.partners.delete({
-        where: {id},
+        where: { id },
     });
 
     return {
-        message: "Partner deleted successfully", id
-    }
+        message: "Partner deleted successfully",
+        id
+    };
 };
+
 
 export default {
     create,

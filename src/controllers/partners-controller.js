@@ -1,3 +1,5 @@
+import fs from "fs";
+
 import partnerService from "../services/partners-service.js";
 import { ResponseError } from "../error/response-error.js";
 
@@ -17,6 +19,9 @@ const create = async (req, res, next) => {
             data: result
         });
     } catch (e) {
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
         next(e);
     }
 };
@@ -56,6 +61,9 @@ const update = async (req, res, next) => {
             data: result
         });
     } catch (e) {
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
         next(e);
     }
 };

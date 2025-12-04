@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Partners" ALTER COLUMN "logo" SET DATA TYPE TEXT;
