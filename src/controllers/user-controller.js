@@ -13,7 +13,7 @@ const add = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const result = await userService.login(req.body);
+        const result = await userService.login(req.body, res);
         res.status(200).json({
             data: result
         });
@@ -57,6 +57,7 @@ const update = async (req, res, next) => {
     }
 }
 
+// kalau pake localStorage
 // const logout = async (req, res, next) => {
 //     try {
 //         await userService.logout(req.user.username);
@@ -68,11 +69,22 @@ const update = async (req, res, next) => {
 //     }
 // }
 
+// pake http-only cookie
+const logout = async (req, res, next) => {
+    try {
+        const result = await userService.logout(res);
+        res.status(200).json(result);
+    } catch (e) {
+        next(e);
+    }
+};
+
+
 export default {
     add,
     login,
     getById,
     getAll,
     update,
-    // logout
+    logout
 }
