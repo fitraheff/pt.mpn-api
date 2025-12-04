@@ -4,7 +4,7 @@ import path from "path";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = './uploads'
+        const dir = 'uploads/'
 
         if(!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true })
@@ -16,8 +16,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-
-        cb(null, "testimony-" + unique + ext);
+        cb(null, unique + ext);
     }
 });
 
@@ -32,8 +31,9 @@ const fileFilter = (req, file, cb) => {
     cb (null, true);
 };
 
-export const upload = multer({
+
+export const upload = (fieldName) => multer({
     storage,
     fileFilter,
     limits: { fileSize: 5 * 1024 * 1024 } //5MB
-}).single('foto');
+}).single(fieldName);

@@ -27,6 +27,9 @@ web.use("/api/users", userRouter);
 web.use("/api/bidang-usaha", BURouter);
 web.use("/api/testimoni", testimoniRouter);
 
+web.use('/uploads',
+    express.static('uploads')
+)
+
 web.use(errorMiddleware);
 
-// web.use("/uploads", express.static("uploads"));

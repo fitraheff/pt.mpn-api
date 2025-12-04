@@ -5,6 +5,7 @@ import { authMiddleware, authSuperadminMiddleware } from "../middleware/auth-mid
 const userRouter = express.Router();
 
 userRouter.post("/login", userController.login);
+userRouter.post("/add", userController.add);
 
 userRouter.use(authMiddleware);
 userRouter.get("/:id", userController.getById);
@@ -12,7 +13,7 @@ userRouter.put("/update", userController.update);
 userRouter.post("/logout", userController.logout);
 
 userRouter.use(authSuperadminMiddleware);
-userRouter.post("/add", userController.add);
+// userRouter.post("/add", userController.add);
 userRouter.get("/", userController.getAll);
 
 

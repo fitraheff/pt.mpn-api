@@ -48,3 +48,4 @@ export const updateTestimonyValidation = Joi.object({
 export const deleteTestimonyValidation = Joi.object({
     id: Joi.string().uuid({ version: ['uuidv4']}).required()
 })
+
