@@ -36,3 +36,13 @@ model Bidang_Usaha {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
+
+model Testimoni {
+  id            String    @id @default(uuid())
+  nama          String    @unique @db.VarChar(100)
+  foto          String
+  pesan_testi   String
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
