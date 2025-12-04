@@ -9,6 +9,7 @@ userRouter.post("/login", userController.login);
 userRouter.use(authMiddleware);
 userRouter.get("/:id", userController.getById);
 userRouter.put("/update", userController.update);
+userRouter.post("/logout", userController.logout);
 
 userRouter.use(authSuperadminMiddleware);
 userRouter.post("/add", userController.add);

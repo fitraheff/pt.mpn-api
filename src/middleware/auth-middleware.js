@@ -4,12 +4,21 @@ import { ResponseError } from '../error/response-error.js';
 
 export const authMiddleware = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader?.startsWith('Bearer ')) {
-            return res.status(401).json({ errors: 'Access token required' });
+        // kalau pake localStorage
+        // const authHeader = req.headers.authorization;
+        // if (!authHeader?.startsWith('Bearer ')) {
+        //     return res.status(401).json({ errors: 'Access token required' });
+        // }
+
+        // const token = authHeader.split(' ')[1];
+
+        // pake http-only cookie
+        const token = req.cookies.token;
+
+        if (!token) {
+            return res.status(401).json({ error: "Access token required" });
         }
 
-        const token = authHeader.split(' ')[1];
         const decoded = verifyToken(token);
 
         const user = await prisma.user.findUnique({
