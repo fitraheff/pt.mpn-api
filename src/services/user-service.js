@@ -9,6 +9,7 @@ import { prisma } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/jwt.js";
+import { config } from "../utils/config.js";  
 
 const add = async (request) => {
     const user = validate(addUserValidation, request);
@@ -45,7 +46,7 @@ const add = async (request) => {
     });
 }
 
-const login = async (request) => {
+const login = async (request, res) => {
     const loginRequest = validate(loginUserValidation, request);
 
     const user = await prisma.user.findUnique({
@@ -71,12 +72,21 @@ const login = async (request) => {
         role: user.role,
     });
 
+    // simpan token di database kalau pake localStorage
     // await prisma.user.update({
     //     where: { id: user.id },
     //     data: { token }
     // });
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: config.env === "production", // true di HTTPS, aktifkan jika pakai HTTPS
+        sameSite: "none",      // anti CSRF
+        maxAge: 24 * 60 * 60 * 1000 // 1 hari
+    });
+
     return {
-        token,
+        // token,
         user: {
             id: user.id,
             name: user.name,
@@ -167,6 +177,7 @@ const update = async (req, userId) => {
     })
 }
 
+// kalau pake localStorage
 // const logout = async (username) => {
 //     username = validate(getUserValidation, username);
 
@@ -193,11 +204,20 @@ const update = async (req, userId) => {
 //     })
 // }
 
+// pake http-only cookie
+const logout = async (res) => {
+
+    res.clearCookie("token");
+
+    return { message: "Logged out" };
+};
+
+
 export default {
     add,
     login,
     getById,
     getAll,
     update,
-    // logout
+    logout
 }
