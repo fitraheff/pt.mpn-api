@@ -16,7 +16,6 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-
         cb(null, unique + ext);
     }
 });
@@ -31,6 +30,7 @@ const fileFilter = (req, file, cb) => {
 
     cb (null, true);
 };
+
 
 export const upload = (fieldName) => multer({
     storage,

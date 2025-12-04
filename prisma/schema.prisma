@@ -18,9 +18,8 @@ model User {
   email     String    @unique @db.VarChar(255)
   password  String    @db.VarChar(255) 
   role      Role      @default(ADMIN)
-  token     String?   @db.VarChar(100)
-  telp      Int       
-  profile   String?
+  telp      Int  
+  token     String?   @db.VarChar(100)     
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -42,7 +41,7 @@ model Testimoni {
   nama          String    @unique @db.VarChar(100)
   foto          String
   pesan_testi   String
-
+  
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }

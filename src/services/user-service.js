@@ -9,6 +9,7 @@ import { prisma } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/jwt.js";
+import { config } from "../utils/config.js";  
 
 const add = async (request) => {
     const user = validate(addUserValidation, request);
@@ -33,7 +34,6 @@ const add = async (request) => {
             email: user.email,
             password: user.password,
             telp: user.telp,
-            profile: user.profile || null,
             role: 'ADMIN',
         },
         select: {
@@ -42,12 +42,11 @@ const add = async (request) => {
             email: true,
             telp: true,
             role: true,
-            profile: true,
         },
     });
 }
 
-const login = async (request) => {
+const login = async (request, res) => {
     const loginRequest = validate(loginUserValidation, request);
 
     const user = await prisma.user.findUnique({
@@ -73,12 +72,21 @@ const login = async (request) => {
         role: user.role,
     });
 
+    // simpan token di database kalau pake localStorage
     // await prisma.user.update({
     //     where: { id: user.id },
     //     data: { token }
     // });
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: config.env === "production", // true di HTTPS, aktifkan jika pakai HTTPS
+        sameSite: "none",      // anti CSRF
+        maxAge: 24 * 60 * 60 * 1000 // 1 hari
+    });
+
     return {
-        token,
+        // token,
         user: {
             id: user.id,
             name: user.name,
@@ -101,7 +109,6 @@ const getById = async (req) => {
             email: true,
             role: true,
             telp: true,
-            profile: true,
             createdAt: true,
             updatedAt: true
         }
@@ -122,7 +129,6 @@ const getAll = async () => {
             email: true,
             role: true,
             telp: true,
-            profile: true,
             createdAt: true,
             updatedAt: true
         }
@@ -147,7 +153,6 @@ const update = async (req, userId) => {
     if (user.name) data.name = user.name;
     if (user.email) data.email = user.email;
     if (user.telp !== undefined) data.telp = user.telp;
-    if (user.profile !== undefined) data.profile = user.profile || null;
 
     if (user.password) {
         const isMatch = await bcrypt.compare(user.currentPassword, totalUserInDatabase.password);
@@ -167,12 +172,12 @@ const update = async (req, userId) => {
             name: true,
             email: true,
             telp: true,
-            profile: true,
             updatedAt: true,
         }
     })
 }
 
+// kalau pake localStorage
 // const logout = async (username) => {
 //     username = validate(getUserValidation, username);
 
@@ -199,11 +204,20 @@ const update = async (req, userId) => {
 //     })
 // }
 
+// pake http-only cookie
+const logout = async (res) => {
+
+    res.clearCookie("token");
+
+    return { message: "Logged out" };
+};
+
+
 export default {
     add,
     login,
     getById,
     getAll,
     update,
-    // logout
+    logout
 }
