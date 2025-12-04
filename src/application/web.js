@@ -11,7 +11,13 @@ import { config } from "../utils/config.js";
 export const web = express();
 web.use(express.json());
 web.use(cookieParser());
-web.use(helmet());
+
+web.use(
+    helmet({
+        contentSecurityPolicy: false,
+    })
+);
+
 web.use(cors({
     origin: config.frontendURL,
     credentials: true,
