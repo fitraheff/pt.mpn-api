@@ -7,6 +7,7 @@ const add = async (req, res, next) => {
         res.status(200).json({
             data: result
         });
+        console.log("berhasi membuat testimoni")
     } catch (e) {
         if (req.file) {
             fs.unlink(req.file.path, () => {});
@@ -44,6 +45,7 @@ const put = async (req, res, next) => {
         res.status(200).json({
             data: result
         });
+        console.log("Update testimoni berhasil")
     } catch (e) {
         if (req.file) {
             fs.unlink(req.file.path, () => {});
@@ -58,6 +60,7 @@ const del = async (req, res, next) => {
         res.status(200).json({
             data: result
         });
+        console.log("Data berhasil dihapus")
     } catch(e) {
         next(e);
     }
