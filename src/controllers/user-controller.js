@@ -24,7 +24,7 @@ const login = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
     try {
-        const userId = req.params.id || req.user.id;
+        const userId = req.user.id;
         const result = await userService.getById(userId);
         res.status(200).json({
             data: result
