@@ -9,6 +9,7 @@ import { testimoniRouter } from "../routes/api-testimoni.js";
 import { galeryRouter } from "../routes/api-gallery.js";
 import { partnersRouter } from "../routes/api-partners.js";
 import { detailJenisBidangUsahaRouter } from "../routes/api-detail-jenis-bidang-usaha.js";
+import { pesanRouter } from "../routes/api-pesan.js";
 import { config } from "../utils/config.js";
 
 export const web = express();
@@ -32,6 +33,7 @@ web.use("/api/testimoni", testimoniRouter);
 web.use("/api/gallery", galeryRouter);
 web.use("/api/partners", partnersRouter);
 web.use("/api/detail-jenis-bidang-usaha", detailJenisBidangUsahaRouter);
+web.use("/api/pesan", pesanRouter);
 
 web.use('/uploads',
     express.static('uploads')
