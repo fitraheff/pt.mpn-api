@@ -36,6 +36,7 @@ model Bidang_Usaha {
   id_BUsaha        String    @id @default(uuid())
   nama_BUsaha      String    @db.VarChar(225)
   deskripsi        String?   @db.Text
+  poto             String?   @db.Text
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -88,4 +89,14 @@ model Partners {
   updatedAt DateTime  @updatedAt
 
   @@index([nama_partner])
-} 
+}
+
+model Pesan{
+  id_pesan       String    @id @default(uuid())
+  name_pesan     String    @db.VarChar(100)
+  email_pesan    String    @db.VarChar(255)
+  pesan_isi      String
+  layanan_pesan  String    @db.VarChar(255)
+  
+  createdAt      DateTime  @default(now())
+}
