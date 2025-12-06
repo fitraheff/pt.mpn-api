@@ -3,14 +3,15 @@ import testimonyService from "../services/testimoni-service.js"
 
 const add = async (req, res, next) => {
     try {
-        const result = await testimonyService.add(req);
+        const userId = req.user.id;
+        const result = await testimonyService.add(req, userId);
         res.status(200).json({
             data: result
         });
-        console.log("berhasi membuat testimoni")
+        // console.log("berhasi membuat testimoni")
     } catch (e) {
         if (req.file) {
-            fs.unlink(req.file.path, () => {});
+            fs.unlink(req.file.path, () => {}); //Mencegah file orphan (file yang tersimpan tapi tidak tercatat di database)
         }
         next(e);
     }
@@ -45,7 +46,7 @@ const put = async (req, res, next) => {
         res.status(200).json({
             data: result
         });
-        console.log("Update testimoni berhasil")
+        // console.log("Update testimoni berhasil")
     } catch (e) {
         if (req.file) {
             fs.unlink(req.file.path, () => {});
@@ -60,7 +61,7 @@ const del = async (req, res, next) => {
         res.status(200).json({
             data: result
         });
-        console.log("Data berhasil dihapus")
+        // console.log("Data berhasil dihapus")
     } catch(e) {
         next(e);
     }

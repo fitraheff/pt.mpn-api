@@ -6,6 +6,8 @@ import { errorMiddleware } from "../middleware/error-middleware.js";
 import { userRouter } from "../routes/api-users.js";
 import { BURouter } from "../routes/api-BUsaha.js";
 import { testimoniRouter } from "../routes/api-testimoni.js";
+import { galeryRouter } from "../routes/api-gallery.js";
+import { partnersRouter } from "../routes/api-partners.js";
 import { config } from "../utils/config.js";
 
 export const web = express();
@@ -26,6 +28,8 @@ web.use(cors({
 web.use("/api/users", userRouter);
 web.use("/api/bidang-usaha", BURouter);
 web.use("/api/testimoni", testimoniRouter);
+web.use("/api/gallery", galeryRouter);
+web.use("/api/partners", partnersRouter);
 
 web.use('/uploads',
     express.static('uploads')
