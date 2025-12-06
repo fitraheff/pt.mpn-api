@@ -5,15 +5,15 @@ import { validate } from "../validations/validation.js";
 import { prisma } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 
-import { 
+import {
     createPartnerValidation,
     getPartnerByIdValidation,
     updatePartnerValidation
- } from "../validations/partners-validation.js";
+} from "../validations/partners-validation.js";
 import { request } from "express";
 
 //  CREATE PARTNER
- const create = async (request) => {
+const create = async (request) => {
     // Validasi text
     const partnerData = validate(createPartnerValidation, {
         nama_partner: request.nama_partner,
@@ -73,7 +73,7 @@ const getById = async (id) => {
             updatedAt: true
         }
     });
-    
+
     if (!partner) {
         throw new ResponseError(404, "Partner not found");
     }

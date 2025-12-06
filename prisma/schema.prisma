@@ -41,14 +41,25 @@ model Bidang_Usaha {
   updatedAt DateTime  @updatedAt
 }
 
+model Detail_JBU {
+  id    String      @id @default(uuid())
+  nama  String      @db.VarChar(250)
+
+  //jenisUsahaId    String
+  //jenis_usaha     ...       @relation(fields: [jenisUsahaId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model Testimoni {
   id            String    @id @default(uuid())
   nama          String    @unique @db.VarChar(100)
   foto          String
   pesan_testi   String
 
-  userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
