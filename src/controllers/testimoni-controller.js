@@ -11,7 +11,7 @@ const add = async (req, res, next) => {
         // console.log("berhasi membuat testimoni")
     } catch (e) {
         if (req.file) {
-            fs.unlink(req.file.path, () => {}); //Mencegah file orphan (file yang tersimpan tapi tidak tercatat di database)
+            fs.unlink(req.file.path, () => { }); //Mencegah file orphan (file yang tersimpan tapi tidak tercatat di database)
         }
         next(e);
     }
@@ -49,7 +49,7 @@ const put = async (req, res, next) => {
         // console.log("Update testimoni berhasil")
     } catch (e) {
         if (req.file) {
-            fs.unlink(req.file.path, () => {});
+            fs.unlink(req.file.path, () => { });
         }
         next(e);
     }
@@ -62,7 +62,7 @@ const del = async (req, res, next) => {
             data: result
         });
         // console.log("Data berhasil dihapus")
-    } catch(e) {
+    } catch (e) {
         next(e);
     }
 }

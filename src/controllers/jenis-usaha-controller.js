@@ -5,12 +5,12 @@ const add = async (req, res, next) => {
     try {
         const bidangUsahaId = req.params.id_BUsaha;
         const result = await jenisUsahaService.add(req, bidangUsahaId);
-        res.status(200).json({
+        res.status(201).json({
             data: result
         });
     } catch (e) {
         if (req.file) {
-            fs.unlink(req.file.path, () => {}); //Mencegah file orphan (file yang tersimpan tapi tidak tercatat di database)
+            fs.unlink(req.file.path, () => { }); //Mencegah file orphan (file yang tersimpan tapi tidak tercatat di database)
         }
         next(e);
     }
@@ -48,7 +48,7 @@ const put = async (req, res, next) => {
         // console.log("Update testimoni berhasil")
     } catch (e) {
         if (req.file) {
-            fs.unlink(req.file.path, () => {});
+            fs.unlink(req.file.path, () => { });
         }
         next(e);
     }
@@ -58,10 +58,11 @@ const del = async (req, res, next) => {
     try {
         const result = await jenisUsahaService.del(req);
         res.status(200).json({
+            message: "Data berhasil dihapus",
             data: result
         });
         // console.log("Data berhasil dihapus")
-    } catch(e) {
+    } catch (e) {
         next(e);
     }
 }
