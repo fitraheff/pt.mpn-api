@@ -2,6 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
+import { RateLimiter } from "../middleware/rate-limiter.js";
 import { errorMiddleware } from "../middleware/error-middleware.js";
 import { userRouter } from "../routes/api-users.js";
 import { BURouter } from "../routes/api-BUsaha.js";
@@ -26,6 +27,8 @@ web.use(cors({
     origin: config.frontendURL,
     credentials: true,
 }));
+
+web.use(RateLimiter);
 
 web.use("/api/users", userRouter);
 web.use("/api/bidang-usaha", BURouter);
