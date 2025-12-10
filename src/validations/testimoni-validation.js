@@ -7,9 +7,9 @@ const nama = Joi.string()
     .trim()
     .required()
     .messages({
-        'string.min' : 'nama minimal 3 karakter',
-        'string.max' : 'nama maksimal 100 karakter',
-        'any.required' : 'nama wajib diisi',
+        'string.min': 'nama minimal 3 karakter',
+        'string.max': 'nama maksimal 100 karakter',
+        'any.required': 'nama wajib diisi',
     });
 
 const pesan_testi = Joi.string()
@@ -18,9 +18,9 @@ const pesan_testi = Joi.string()
     .trim()
     .required()
     .messages({
-        'string.min' : 'pesan minimal 10 karakter',
-        'string.max' : 'nama maksimal 255 karakter',
-        'any.required' : 'pesan harus diisi'
+        'string.min': 'pesan minimal 10 karakter',
+        'string.max': 'nama maksimal 255 karakter',
+        'any.required': 'pesan harus diisi'
     });
 
 //Create validation
@@ -34,18 +34,18 @@ export const getTestimonyByIdValidation = Joi.string()
     .uuid({ version: ['uuidv4'] })
     .required()
     .messages({
-        'string.guide' : 'ID testimony invalid',
-        'any.required' : 'ID testimony wajib diisi'
+        'string.guide': 'ID testimony invalid',
+        'any.required': 'ID testimony wajib diisi'
     })
 
 //Update validation
 export const updateTestimonyValidation = Joi.object({
-    nama : nama.optional(),
-    pesan_testi : pesan_testi.optional()
+    nama: nama.optional(),
+    pesan_testi: pesan_testi.optional()
 }).min(1);
 
 //Delete validation
 export const deleteTestimonyValidation = Joi.object({
-    id: Joi.string().uuid({ version: ['uuidv4']}).required()
+    id: Joi.string().uuid({ version: ['uuidv4'] }).required()
 })
 
