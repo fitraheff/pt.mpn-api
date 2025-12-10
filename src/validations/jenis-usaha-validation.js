@@ -25,10 +25,16 @@ const Deskripsi = joi.string()
         "any.required": "Deskripsi wajib diisi",
     })
 
+    const bidangUsahaId = joi.string()
+    .uuid()
+    .required()
+
+
 // Create
 export const createJenisUsahaValidation = joi.object({
     nama_jenis: Name,
     deskripsi: Deskripsi,
+    bidangUsahaId: bidangUsahaId,
 })
 
 // GetById
@@ -46,4 +52,5 @@ export const getJenisUsahaByIdValidation = joi.string()
 export const updateJenisUsahaValidation = joi.object({
     nama_jenis: Name.optional(),
     deskripsi: Deskripsi.optional(),
+    bidangUsahaId: bidangUsahaId.optional(),
 })

@@ -6,6 +6,7 @@ import { RateLimiter } from "../middleware/rate-limiter.js";
 import { errorMiddleware } from "../middleware/error-middleware.js";
 import { userRouter } from "../routes/api-users.js";
 import { BURouter } from "../routes/api-BUsaha.js";
+import { jUsahaRouter } from "../routes/api-JUsaha.js";
 import { testimoniRouter } from "../routes/api-testimoni.js";
 import { galeryRouter } from "../routes/api-gallery.js";
 import { partnersRouter } from "../routes/api-partners.js";
@@ -32,6 +33,9 @@ web.use(RateLimiter);
 
 web.use("/api/users", userRouter);
 web.use("/api/bidang-usaha", BURouter);
+web.use("/api/jenis-usaha", jUsahaRouter
+    
+);
 web.use("/api/testimoni", testimoniRouter);
 web.use("/api/gallery", galeryRouter);
 web.use("/api/partners", partnersRouter);
