@@ -19,13 +19,16 @@ model User {
   password  String    @db.VarChar(255) 
   role      Role      @default(ADMIN)
   telp      Int  
-  token     String?   @db.VarChar(100)     
+  token     String?   @db.VarChar(100)  
+
+  testimonies Testimoni[]
+  Gallery     Gallery[]   
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-//  testimoni Testimoni[]
-
+  @@index([email])
+  @@index([name])
   @@map("users")
 }
 
@@ -33,9 +36,21 @@ model Bidang_Usaha {
   id_BUsaha        String    @id @default(uuid())
   nama_BUsaha      String    @db.VarChar(225)
   deskripsi        String?   @db.Text
+  poto             String?   @db.Text
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Detail_JBU {
+  id    String      @id @default(uuid())
+  nama  String      @db.VarChar(250)
+
+  //jenisUsahaId    String
+  //jenis_usaha     ...       @relation(fields: [jenisUsahaId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Testimoni {
@@ -44,9 +59,45 @@ model Testimoni {
   foto          String
   pesan_testi   String
 
-//  id_user       String     
-//  user          User      @relation(fields:[id_user], references: [id], onDelete: Cascade)
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Gallery {
+  id        String      @id @default(uuid())
+  image     String
+  
+  id_users  String
+  users     User        @relation(fields: [id_users], references: [id], onDelete: Cascade)
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("gallery")
+}
+
+model Partners {
+  id              String    @id @default(uuid())
+  nama_partner    String    @unique @db.VarChar(250)
+  deskripsi       String
+  logo            String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([nama_partner])
+}
+
+model Pesan{
+  id_pesan       String    @id @default(uuid())
+  name_pesan     String    @db.VarChar(100)
+  email_pesan    String    @db.VarChar(255)
+  pesan_isi      String
+  layanan_pesan  String    @db.VarChar(255)
+  
+  createdAt      DateTime  @default(now())
 }

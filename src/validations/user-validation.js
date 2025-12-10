@@ -30,25 +30,17 @@ const password = Joi.string()
         'any.required': 'Password wajib diisi',
     });
 
-// const jabatan = Joi.string().max(100).trim().required().messages({
-//     'any.required': 'Jabatan wajib diisi',
-// });
-
 const telp = Joi.number().integer().min(1000000).max(999999999999).required().messages({
     'number.base': 'No telepon harus angka',
     'any.required': 'No telepon wajib diisi',
 });
-
-const profile = Joi.string().uri().allow('').optional();
 
 // REGISTER
 export const addUserValidation = Joi.object({
     name,
     email,
     password: password.optional(),
-    // jabatan,
     telp: telp,
-    profile: Joi.string().uri().optional().allow('').default(null),
 }).required();
 
 // LOGIN
@@ -72,9 +64,7 @@ export const getUserValidation = Joi.string()
 export const updateUserValidation = Joi.object({
     name: name.optional(),
     email: email.optional(),
-    // jabatan: jabatan.optional(),
     telp: telp.optional(),
-    profile: profile.optional(),
     password: password.optional(),
     currentPassword: Joi.string()
         .min(6)
