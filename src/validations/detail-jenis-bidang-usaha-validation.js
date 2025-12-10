@@ -21,7 +21,7 @@ export const createDetailJenisBidangUsahaValidation = joi.object({
 // GetById
 export const getDetailJenisByIdValidation = joi.string()
     .trim()
-    .uuid({version: ['uuidv4']})
+    .uuid({ version: ['uuidv4'] })
     .required()
     .messages({
         "string.empty": "Id wajib diisi",

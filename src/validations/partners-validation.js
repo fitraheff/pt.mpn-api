@@ -34,7 +34,7 @@ export const createPartnerValidation = joi.object({
 // GetById
 export const getPartnerByIdValidation = joi.string()
     .trim()
-    .uuid({version: ['uuidv4']})
+    .uuid({ version: ['uuidv4'] })
     .required()
     .messages({
         "string.empty": "Id wajib diisi",
