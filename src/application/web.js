@@ -33,9 +33,7 @@ web.use(RateLimiter);
 
 web.use("/api/users", userRouter);
 web.use("/api/bidang-usaha", BURouter);
-web.use("/api/jenis-usaha", jUsahaRouter
-    
-);
+web.use("/api/jenis-usaha", jUsahaRouter);
 web.use("/api/testimoni", testimoniRouter);
 web.use("/api/gallery", galeryRouter);
 web.use("/api/partners", partnersRouter);
