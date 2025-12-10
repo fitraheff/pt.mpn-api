@@ -38,19 +38,36 @@ model Bidang_Usaha {
   deskripsi        String?   @db.Text
   poto             String?   @db.Text
 
+  jenis_usaha   Jenis_Usaha[] 
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Jenis_Usaha {
+  id            String    @id @default(uuid())
+  nama_jenis    String    @db.VarChar(250)
+  deskripsi     String
+  foto          String
+
+  bidangUsahaId String
+  bidang_usaha  Bidang_Usaha @relation(fields: [bidangUsahaId], references: [id_BUsaha], onDelete: Cascade)
+
+  detail_jbu    Detail_JBU[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Detail_JBU {
   id    String      @id @default(uuid())
   nama  String      @db.VarChar(250)
 
-  //jenisUsahaId    String
-  //jenis_usaha     ...       @relation(fields: [jenisUsahaId], references: [id], onDelete: Cascade)
+  jenisUsahaId      String
+  jenis_usaha       Jenis_Usaha       @relation(fields: [jenisUsahaId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model Testimoni {
