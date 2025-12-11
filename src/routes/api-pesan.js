@@ -6,10 +6,10 @@ const pesanRouter = express.Router();
 
 pesanRouter.get("/", PesanController.getAllMessage)
 pesanRouter.get("/:id", PesanController.getMessageById)
+pesanRouter.post("/add", PesanController.createMessage)
 
 pesanRouter.use(authMiddleware);
 
-pesanRouter.post("/add", PesanController.createMessage)
 pesanRouter.put("/:id", PesanController.updateMessage)
 pesanRouter.delete("/:id", PesanController.deleteMessage)
 
