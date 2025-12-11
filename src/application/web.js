@@ -12,6 +12,7 @@ import { galeryRouter } from "../routes/api-gallery.js";
 import { partnersRouter } from "../routes/api-partners.js";
 import { detailJenisBidangUsahaRouter } from "../routes/api-detail-jenis-bidang-usaha.js";
 import { pesanRouter } from "../routes/api-pesan.js";
+import { cPRouter } from "../routes/api-CProfile.js";
 import { config } from "../utils/config.js";
 
 export const web = express();
@@ -33,14 +34,13 @@ web.use(RateLimiter);
 
 web.use("/api/users", userRouter);
 web.use("/api/bidang-usaha", BURouter);
-web.use("/api/jenis-usaha", jUsahaRouter
-    
-);
+web.use("/api/jenis-usaha", jUsahaRouter);
 web.use("/api/testimoni", testimoniRouter);
 web.use("/api/gallery", galeryRouter);
 web.use("/api/partners", partnersRouter);
 web.use("/api/detail-jenis-bidang-usaha", detailJenisBidangUsahaRouter);
 web.use("/api/pesan", pesanRouter);
+web.use("/api/company-profile", cPRouter);
 
 web.use('/uploads',
     express.static('uploads')
