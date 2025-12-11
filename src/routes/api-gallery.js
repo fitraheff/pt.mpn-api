@@ -9,10 +9,10 @@ const galeryRouter = express.Router();
 // Galery Routes
 // ----------------------
 galeryRouter.get("/", galleryController.getAll);
+galeryRouter.get("/:id", galleryController.getById);
 
 galeryRouter.use(authMiddleware);
 galeryRouter.post("/add", upload("image"), galleryController.create);
-galeryRouter.get("/:id", galleryController.getById);
 galeryRouter.put("/:id", upload("image"), galleryController.update);
 galeryRouter.delete("/:id", galleryController.remove);
 

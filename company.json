@@ -1,58 +1,58 @@
 {
-    "name" : "PT MULTIARTHA PUNDIMAS NAWASENA",
-    "short_name" : "MPN",
-    "tagline" : "Pelatihan & Pengembangan SDM Profesional, Inovatif, dan Terpercaya",
-    
-    "visi" : "Menjadi perusahaan pelatihan dan pengembangan SDM profesional, inovatif, dan terpercaya di Indonesia.",
+  "name": "PT MULTIARTHA PUNDIMAS NAWASENA",
+  "short_name": "MPN",
+  "tagline": "Pelatihan & Pengembangan SDM Profesional, Inovatif, dan Terpercaya",
 
-    "misi" : [
-        "Menyelenggarakan program pelatihan berkualitas tinggi yang relevan dengan kebutuhan industri",
-        "Mengembangkan kompetensi SDM melalui metode pembelajaran inovatif dan efektif",
-        "Memberikan layanan konsultansi manajemen yang profesional dan solusi-oriented",
-        "Membangun kemitraan strategis dengan berbagai institusi dan perusahaan",
-        "Berkontribusi aktif dalam meningkatkan daya saing SDM Indonesia"
-    ],
+  "visi": "Menjadi perusahaan pelatihan dan pengembangan SDM profesional, inovatif, dan terpercaya di Indonesia.",
 
-    "about" : "PT Multiartha Pundimas Nawasena (MPN) adalah perusahaan yang bergerak di bidang pelatihan dan pengembangan sumber daya manusia. Kami berkomitmen untuk memberikan program pelatihan berkualitas tinggi yang dirancang khusus untuk meningkatkan kompetensi dan produktivitas SDM di berbagai sektor industri. Dengan tim instruktur profesional dan berpengalaman, kami telah dipercaya oleh berbagai perusahaan dan institusi dalam menyelenggarakan program pelatihan, konsultansi manajemen, dan pengembangan SDM.",
-  
-    "legalitas" : [
-        "Pengesahan Badan Hukum: AHU-0001331.AH.01.01.Tahun 2025",
-        "Akta Pendirian: Akta No07 (Januari 2025)",
-        "Notaris: SELLY, S.H., M.Kn",
-        "SPPL, Sertifikat Standar KBLI 68111, Tata Ruang UMK/UK, K3L, dan dokumen OSS lainnya"
-    ],
+  "misi": [
+    "Menyelenggarakan program pelatihan berkualitas tinggi yang relevan dengan kebutuhan industri",
+    "Mengembangkan kompetensi SDM melalui metode pembelajaran inovatif dan efektif",
+    "Memberikan layanan konsultansi manajemen yang profesional dan solusi-oriented",
+    "Membangun kemitraan strategis dengan berbagai institusi dan perusahaan",
+    "Berkontribusi aktif dalam meningkatkan daya saing SDM Indonesia"
+  ],
 
-    "struktur_organisasi" : {
-        "direktur_utama" : "Doddy Dewayadi, SE, MM",
-        "direktur_operasional" : "Tri Mulyo, SE",
-        "direktur_keuangan" : "Rahmi Anggraini, ST",
-        "manager_admin_umum" : "Marsha Annisaputri, S.Par.",
-        "manager_marketing" : "Muhammad Adimas Calvin, SE"
-    },
+  "about": "PT Multiartha Pundimas Nawasena (MPN) adalah perusahaan yang bergerak di bidang pelatihan dan pengembangan sumber daya manusia. Kami berkomitmen untuk memberikan program pelatihan berkualitas tinggi yang dirancang khusus untuk meningkatkan kompetensi dan produktivitas SDM di berbagai sektor industri. Dengan tim instruktur profesional dan berpengalaman, kami telah dipercaya oleh berbagai perusahaan dan institusi dalam menyelenggarakan program pelatihan, konsultansi manajemen, dan pengembangan SDM.",
 
-    "keunggulan" : [
-        "Instruktur bersertifikat dan berpengalaman di bidangnya",
-        "Materi pelatihan yang selalu up-to-date sesuai kebutuhan industri",
-        "Metode pembelajaran interaktif dan aplikatif",
-        "Fasilitas pelatihan yang lengkap dan modern",
-        "Sertifikat resmi yang diakui",
-        "Layanan konsultansi pasca pelatihan",
-        "Customized training sesuai kebutuhan klien",
-        "Track record yang terbukti dengan berbagai klien terkemuka"
-    ],
+  "legalitas": [
+    "Pengesahan Badan Hukum: AHU-0001331.AH.01.01.Tahun 2025",
+    "Akta Pendirian: Akta No07 (Januari 2025)",
+    "Notaris: SELLY, S.H., M.Kn",
+    "SPPL, Sertifikat Standar KBLI 68111, Tata Ruang UMK/UK, K3L, dan dokumen OSS lainnya"
+  ],
 
-    "kontak" : {
-        "phone" : "0821-1472-6830",
-        "email" : "ptmultiarthapundimasnawasena@gmail.com",
-        "address" : "Ruko Sentra Eropa Blok B16, Ciangsana, Gunung Putri, Bogor 16968",
-        "mapsEmbed" : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.2!2d106.9!3d-6.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjQnMDAuMCJTIDEwNsKwNTQnMDAuMCJF!5e0!3m2!1sen!2sid!4v1234567890"
-    },
+  "struktur_organisasi": {
+    "direktur_utama": "Doddy Dewayadi, SE, MM",
+    "direktur_operasional": "Tri Mulyo, SE",
+    "direktur_keuangan": "Rahmi Anggraini, ST",
+    "manager_admin_umum": "Marsha Annisaputri, S.Par.",
+    "manager_marketing": "Muhammad Adimas Calvin, SE"
+  },
 
-    "sosial_media" : {
-        "linkedin" : "#",
-        "facebook" : "#",
-        "instagram" : "#",
-        "tiktok" : "#",
-        "youtube" : "#"
-    }
+  "keunggulan": [
+    "Instruktur bersertifikat dan berpengalaman di bidangnya",
+    "Materi pelatihan yang selalu up-to-date sesuai kebutuhan industri",
+    "Metode pembelajaran interaktif dan aplikatif",
+    "Fasilitas pelatihan yang lengkap dan modern",
+    "Sertifikat resmi yang diakui",
+    "Layanan konsultansi pasca pelatihan",
+    "Customized training sesuai kebutuhan klien",
+    "Track record yang terbukti dengan berbagai klien terkemuka"
+  ],
+
+  "kontak": {
+    "phone": "0821-1472-6830",
+    "email": "ptmultiarthapundimasnawasena@gmail.com",
+    "address": "Ruko Sentra Eropa Blok B16, Ciangsana, Gunung Putri, Bogor 16968",
+    "mapsEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.2!2d106.9!3d-6.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjQnMDAuMCJTIDEwNsKwNTQnMDAuMCJF!5e0!3m2!1sen!2sid!4v1234567890"
+  },
+
+  "sosial_media": {
+    "linkedin": "#",
+    "facebook": "#",
+    "instagram": "#",
+    "tiktok": "#",
+    "youtube": "#"
+  }
 }

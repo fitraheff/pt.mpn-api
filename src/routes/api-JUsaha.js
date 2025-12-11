@@ -5,10 +5,11 @@ import { authMiddleware } from "../middleware/auth-middleware.js";
 
 const jUsahaRouter = express.Router();
 
-jUsahaRouter.use(authMiddleware);
-jUsahaRouter.post('/add/:id_BUsaha', upload("foto"), jUsahaController.add);
 jUsahaRouter.get('/', jUsahaController.getAll);
 jUsahaRouter.get('/:id', jUsahaController.getById);
+
+jUsahaRouter.use(authMiddleware);
+jUsahaRouter.post('/add/:id_BUsaha', upload("foto"), jUsahaController.add);
 jUsahaRouter.put('/update/:id', upload("foto"), jUsahaController.put);
 jUsahaRouter.delete('/delete/:id', jUsahaController.del);
 
