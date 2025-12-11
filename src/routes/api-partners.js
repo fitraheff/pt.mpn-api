@@ -5,11 +5,11 @@ import { upload } from "../middleware/multer-middleware.js";
 
 const partnersRouter = express.Router();
 
-partnersRouter.use(authMiddleware);
-
 // Routes untuk partner
 partnersRouter.get("/", partnersController.getAll);
 partnersRouter.get("/:id", partnersController.getById);
+
+partnersRouter.use(authMiddleware);
 
 // uploadImage("logo") ← wajib ada field name
 partnersRouter.post("/add", upload("logo"), partnersController.create);
