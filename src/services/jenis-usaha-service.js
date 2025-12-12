@@ -27,6 +27,7 @@ const add = async (req, bidangUsahaId) => {
     return await prisma.jenis_Usaha.create({
         data: {
             nama_jenis: jenis_usaha.nama_jenis,
+            status: jenis_usaha.status,
             deskripsi: jenis_usaha.deskripsi,
             foto: foto,
             bidangUsahaId: bidangUsahaId,
@@ -93,6 +94,7 @@ const put = async (req) => {
         data: {
             nama_jenis: jenisUsaha.nama_jenis ?? oldData.nama_jenis,
             deskripsi: jenisUsaha.deskripsi ?? oldData.deskripsi,
+            status: jenisUsaha.status ?? oldData.status,
             foto: newFoto,
             bidangUsahaId: jenisUsaha.bidangUsahaId ?? oldData.bidangUsahaId,
         }

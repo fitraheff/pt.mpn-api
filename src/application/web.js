@@ -25,10 +25,7 @@ web.use(
     })
 );
 
-web.use(cors({
-    origin: config.frontendURL,
-    credentials: true,
-}));
+web.use(cors());
 
 web.use(RateLimiter);
 

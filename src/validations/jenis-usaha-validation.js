@@ -14,26 +14,24 @@ const Name = joi.string()
     })
 
 const Deskripsi = joi.string()
-    .min(10)
+    .min(3)
     .max(250)
     .trim()
     .required()
     .messages({
         "string.empty": "Deskripsi wajib diisi",
-        "string.min": "Deskripsi minimal 10 karakter",
+        "string.min": "Deskripsi minimal 3 karakter",
         "string.max": "Deskripsi maksimal 250 karakter",
         "any.required": "Deskripsi wajib diisi",
     })
 
-const bidangUsahaId = joi.string()
-    .uuid()
-    .required()
-
+const Status = joi.string().required()
 
 // Create
 export const createJenisUsahaValidation = joi.object({
     nama_jenis: Name,
     deskripsi: Deskripsi,
+    status: Status,
     // bidangUsahaId: bidangUsahaId,
 })
 
@@ -52,5 +50,6 @@ export const getJenisUsahaByIdValidation = joi.string()
 export const updateJenisUsahaValidation = joi.object({
     nama_jenis: Name.optional(),
     deskripsi: Deskripsi.optional(),
+    status: Status.optional(),
     // bidangUsahaId: bidangUsahaId.optional(),
 })

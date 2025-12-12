@@ -30,10 +30,15 @@ const password = Joi.string()
         'any.required': 'Password wajib diisi',
     });
 
-const telp = Joi.number().integer().min(1000000).max(999999999999).required().messages({
-    'number.base': 'No telepon harus angka',
-    'any.required': 'No telepon wajib diisi',
-});
+const telp = Joi.string()
+    .trim()
+    .pattern(/^(\+62|62|0)[0-9]{9,13}$/)  // 11–15 digit, mulai 08/628/+628
+    .required()
+    .messages({
+        'string.empty'       : 'Nomor telepon wajib diisi',
+        'any.required'       : 'Nomor telepon wajib diisi',
+        'string.pattern.base': 'Nomor telepon minimal 11 dan maksimal 15 digit. Contoh: 081234567890',
+    });
 
 // REGISTER
 export const addUserValidation = Joi.object({
