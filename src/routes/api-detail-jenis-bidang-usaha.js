@@ -9,7 +9,7 @@ detailJenisBidangUsahaRouter.get('/:id', detailJenisBidangUsahaController.getByI
 
 detailJenisBidangUsahaRouter.use(authMiddleware);
 
-detailJenisBidangUsahaRouter.post('/', detailJenisBidangUsahaController.add);
+detailJenisBidangUsahaRouter.post('/add', detailJenisBidangUsahaController.add);
 detailJenisBidangUsahaRouter.put('/:id', detailJenisBidangUsahaController.update);
 detailJenisBidangUsahaRouter.delete('/:id', detailJenisBidangUsahaController.remove);
 

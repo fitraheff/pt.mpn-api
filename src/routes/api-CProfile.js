@@ -4,8 +4,8 @@ import { authMiddleware } from "../middleware/auth-middleware.js";
 
 const cPRouter = express.Router();
 
-cPRouter.use(authMiddleware)
 cPRouter.get("/", getProfile);
+cPRouter.use(authMiddleware)
 cPRouter.put("/update", updateProfile);
 
 export { cPRouter };

@@ -81,7 +81,7 @@ const login = async (request, res) => {
     res.cookie("token", token, {
         httpOnly: true,
         secure: config.env === "production", // true di HTTPS, aktifkan jika pakai HTTPS
-        sameSite: "none",      // anti CSRF
+        //sameSite: "none",      // anti CSRF
         maxAge: 24 * 60 * 60 * 1000 // 1 hari
     });
 
@@ -177,6 +177,23 @@ const update = async (req, userId) => {
     })
 }
 
+const remove = async (id) => {
+    // id = validate(getUserValidation, id);
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id
+        }
+    });;
+
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
+
+    return prisma.user.delete({
+        where: {
+            id: id
+        }});
+}
 // kalau pake localStorage
 // const logout = async (username) => {
 //     username = validate(getUserValidation, username);
@@ -219,5 +236,6 @@ export default {
     getById,
     getAll,
     update,
+    remove,
     logout
 }

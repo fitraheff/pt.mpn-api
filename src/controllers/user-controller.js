@@ -49,8 +49,19 @@ const update = async (req, res, next) => {
     try {
         const result = await userService.update(req.body, req.user.id || req.params.id);
         res.status(200).json({
-            message: "Profile berhasil diperbarui",
+            message: "User berhasil diperbarui",
             data: result
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+
+const remove = async (req, res, next) => {
+    try {
+        await userService.remove(req.params.id);
+        res.status(200).json({
+            message: "User berhasil dihapus",
         });
     } catch (e) {
         next(e);
@@ -86,5 +97,6 @@ export default {
     getById,
     getAll,
     update,
+    remove,
     logout
 }
