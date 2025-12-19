@@ -22,10 +22,17 @@ web.use(cookieParser());
 web.use(
     helmet({
         contentSecurityPolicy: false,
+        crossOriginOpenerPolicy: false,
+        crossOriginResourcePolicy: false
     })
 );
 
 web.use(cors());
+// web.use(cors({
+//     origin: '*',
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+// }));
 
 web.use(RateLimiter);
 

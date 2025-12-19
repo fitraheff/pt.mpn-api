@@ -31,6 +31,14 @@ const add = async (req, bidangUsahaId) => {
             deskripsi: jenis_usaha.deskripsi,
             foto: foto,
             bidangUsahaId: bidangUsahaId,
+        },
+        include: {
+            bidang_usaha: {
+                select: {
+                    // id_BUsaha: true,
+                    nama_BUsaha: true
+                }
+            }
         }
     })
 };
@@ -38,7 +46,12 @@ const add = async (req, bidangUsahaId) => {
 const getAll = async () => {
     return await prisma.jenis_Usaha.findMany({
         include: {
-            bidang_usaha: true
+            bidang_usaha: {
+                select: {
+                    // id_BUsaha: true,
+                    nama_BUsaha: true
+                }
+            }
         },
         orderBy: {
             createdAt: 'desc'
@@ -74,7 +87,7 @@ const put = async (req) => {
     })
 
     if (!oldData) {
-        throw new ResponseError(400, "Jenis usaha not found")
+        throw new ResponseError(404, "Jenis usaha not found")
     }
 
     let newFoto = oldData.foto;
@@ -97,6 +110,14 @@ const put = async (req) => {
             status: jenisUsaha.status ?? oldData.status,
             foto: newFoto,
             bidangUsahaId: jenisUsaha.bidangUsahaId ?? oldData.bidangUsahaId,
+        },
+        include: {
+            bidang_usaha: {
+                select: {
+                    // id_BUsaha: true,
+                    nama_BUsaha: true
+                }
+            }
         }
     });
 }
