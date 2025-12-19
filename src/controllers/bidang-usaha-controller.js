@@ -1,6 +1,7 @@
 import {
     getAllBU,
     getBUById,
+    countBUName,
     createBU,
     updateBU,
     deleteBU
@@ -95,24 +96,31 @@ export const getPotoBUById = async (req, res) => {
 export const createBidangUsaha = async (req, res) => {
     try {
         const data = await validate(validationBU, req.body);
+
+        const CountBU = await countBUName(data.nama_BUsaha);
+
+        if (CountBU > 0) {
+            if (req.file) fs.unlinkSync(req.file.path);
+
+            return res.status(400).json({
+                message: "Nama bidang usaha sudah terdaftar, silakan gunakan nama lain."
+            });
+        }
+
         const poto = req.file ? req.file.path : null;
 
-        // Mengambil data dari body request
-        // const { id_BUsaha, nama_BUsaha, deskripsi, poto } = req.body;
-
-        // Menyimpan data ke database lewat service
         const BU = await createBU({
-            // id_BUsaha,
             nama_BUsaha: data.nama_BUsaha,
             deskripsi: data.deskripsi || null,
-            poto: poto
+            poto: poto || null
         });
 
-        // Mengirim response sukses dengan status 201
+        // Mengirim response sukses
         return res.status(201).json(BU);
+
     } catch (error) {
-        if (req.file) { fs.unlink(req.file.path, () => { }); } //ditambahkan untuk menghapus file jika terjadi error
-        // console.error(error);
+        if (req.file) { fs.unlink(req.file.path, () => { }); }
+
         return res.status(400).json({
             message: error.message
         });
@@ -122,28 +130,47 @@ export const createBidangUsaha = async (req, res) => {
 // UPDATE
 export const updateBidangUsaha = async (req, res) => {
     try {
-        // Mengambil id dari URL
         const id = req.params.id;
-
-        // Mengambil data yang akan diubah dari body
         const data = await validate(validationBU, req.body);
-        // const { nama_BUsaha, deskripsi } = req.body;
+        const CountBU = await countBUName(data.nama_BUsaha);
 
-        // Memanggil service untuk update data
+        if (CountBU > 0) {
+            if (req.file) fs.unlinkSync(req.file.path);
+
+            return res.status(400).json({
+                message: "Nama bidang usaha sudah terdaftar, silakan gunakan nama lain."
+            });
+        }
+
+        if (!data || !data.nama_BUsaha) {
+            return res.status(400).json({
+                message: "Gagal memproses data."
+            });
+        }
+
         const BU = await updateBU(id, {
             nama_BUsaha: data.nama_BUsaha,
             deskripsi: data.deskripsi || null,
         });
 
-        // Mengirim response data yang sudah di-update
-        return res.json(BU);
-    } catch (error) {
-        console.error(error);
+        return res.json({
+            message: "Update Berhasil",
+            data: BU
+        });
 
-        // Jika ID tidak ditemukan di database
+    } catch (error) {
+        console.error("Error Detail:", error);
+
         if (error.code === 'P2025') {
             return res.status(404).json({ message: 'ID Bidang Usaha tidak ditemukan!!' });
         }
+
+        if (error.code === 'P2002') {
+            return res.status(400).json({
+                message: `Nama Bidang Usaha '${req.body.nama_BUsaha}' sudah terdaftar, gunakan nama lain.`
+            });
+        }
+
         return res.status(400).json({ message: error.message });
     }
 };
@@ -154,17 +181,15 @@ export const updatePotoBU = async (req, res) => {
         // Ambil ID dari parameter URL
         const id = req.params.id;
 
-        // Cek apakah data Bidang Usaha dengan ID tersebut ada
-        const bUsaha = await getBUById(id); // update URL foto baru
+        const bUsaha = await getBUById(id);
         if (!bUsaha) {
             return res.status(404).json({
                 message: "Data tidak ditemukan"
             });
         };
 
-        let dataUpdate = {}; // object kosong untuk data update
+        let dataUpdate = {};
 
-        // Jika user mengirim file foto
         if (req.file) {
             dataUpdate.poto = `/uploads/${req.file.filename}`;
         }
@@ -196,17 +221,10 @@ export const updatePotoBU = async (req, res) => {
 // DELETE
 export const deleteBidangUsaha = async (req, res) => {
     try {
-        // Mengambil id dari URL
         const id = req.params.id;
-
-        // Menghapus data dari database
         await deleteBU(id);
-
-        // Mengirim response berhasil
         return res.json({ message: 'Bidang Usaha telah di hapus' });
     } catch (error) {
-        // console.error(error);
-        // Jika ID tidak ditemukan di database
         if (error.code === 'P2025') {
             return res.status(404).json({ message: 'Bidang Usaha tidak ditemukan!!' });
         }
@@ -217,13 +235,8 @@ export const deleteBidangUsaha = async (req, res) => {
 // DELETE FOTO 
 export const deletePotoBU = async (req, res) => {
     try {
-        // Mengambil id dari URL
         const id = req.params.id;
-
-        // Ambil data Bidang Usaha berdasarkan ID
         const bUsaha = await getBUById(id);
-
-        // Jika data tidak ditemukan atau tidak punya poto
         if (!bUsaha || !bUsaha.poto) {
             return res.status(404).json({
                 message: "Foto Bidang Usaha tidak ditemukan"

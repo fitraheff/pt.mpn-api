@@ -16,10 +16,24 @@ export const createBU = async (data) => {
     });
 };
 
+export const countBUName = async (nama) => {
+    return await prisma.bidang_Usaha.count({
+        where: {
+            nama_BUsaha: {
+                equals: nama,
+                mode: 'insensitive'
+            }
+        }
+    });
+};
+
 export const updateBU = async (id, data) => {
     return await prisma.bidang_Usaha.update({
         where: { id_BUsaha: id },
-        data
+        data: {
+            nama_BUsaha: data.nama_BUsaha,
+            deskripsi: data.deskripsi
+        }
     });
 };
 
