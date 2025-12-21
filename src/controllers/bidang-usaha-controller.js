@@ -11,6 +11,7 @@ import { validate } from "../validations/validation.js"
 import { validationBU } from "../validations/bidang-usaha-validation.js";
 import fs from "fs";
 import path from "path";
+import { prisma } from '../application/database.js';
 
 // GET ALL
 export const getAllBidangUsaha = async (req, res) => {
@@ -107,7 +108,7 @@ export const createBidangUsaha = async (req, res) => {
             });
         }
 
-        const poto = req.file ? req.file.path : null;
+        const poto = req.file ? `/uploads/${req.file.filename}` : null;
 
         const BU = await createBU({
             nama_BUsaha: data.nama_BUsaha,
@@ -132,19 +133,21 @@ export const updateBidangUsaha = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await validate(validationBU, req.body);
-        const CountBU = await countBUName(data.nama_BUsaha);
+        const existingCount = await prisma.bidang_Usaha.count({
+            where: {
+                nama_BUsaha: {
+                    equals: data.nama_BUsaha,
+                    mode: 'insensitive'
+                },
+                NOT: {
+                    id_BUsaha: id  // ←← INI YANG WAJIB DITAMBAHKAN
+                }
+            }
+        });
 
-        if (CountBU > 0) {
-            if (req.file) fs.unlinkSync(req.file.path);
-
+        if (existingCount > 0) {
             return res.status(400).json({
-                message: "Nama bidang usaha sudah terdaftar, silakan gunakan nama lain."
-            });
-        }
-
-        if (!data || !data.nama_BUsaha) {
-            return res.status(400).json({
-                message: "Gagal memproses data."
+                message: "Nama bidang usaha sudah terdaftar di data lain, silakan gunakan nama lain."
             });
         }
 

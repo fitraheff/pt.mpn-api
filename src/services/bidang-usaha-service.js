@@ -32,7 +32,8 @@ export const updateBU = async (id, data) => {
         where: { id_BUsaha: id },
         data: {
             nama_BUsaha: data.nama_BUsaha,
-            deskripsi: data.deskripsi
+            deskripsi: data.deskripsi,
+            poto: data.poto
         }
     });
 };
