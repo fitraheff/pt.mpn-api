@@ -12,6 +12,10 @@ import { galeryRouter } from "../routes/api-gallery.js";
 import { partnersRouter } from "../routes/api-partners.js";
 import { detailJenisBidangUsahaRouter } from "../routes/api-detail-jenis-bidang-usaha.js";
 import { pesanRouter } from "../routes/api-pesan.js";
+<<<<<<< HEAD
+=======
+import { cPRouter } from "../routes/api-CProfile.js";
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
 import { config } from "../utils/config.js";
 
 export const web = express();
@@ -21,6 +25,7 @@ web.use(cookieParser());
 web.use(
     helmet({
         contentSecurityPolicy: false,
+<<<<<<< HEAD
     })
 );
 
@@ -28,6 +33,19 @@ web.use(cors({
     origin: config.frontendURL,
     credentials: true,
 }));
+=======
+        crossOriginOpenerPolicy: false,
+        crossOriginResourcePolicy: false
+    })
+);
+
+web.use(cors());
+// web.use(cors({
+//     origin: '*',
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+// }));
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
 
 web.use(RateLimiter);
 
@@ -39,6 +57,10 @@ web.use("/api/gallery", galeryRouter);
 web.use("/api/partners", partnersRouter);
 web.use("/api/detail-jenis-bidang-usaha", detailJenisBidangUsahaRouter);
 web.use("/api/pesan", pesanRouter);
+<<<<<<< HEAD
+=======
+web.use("/api/company-profile", cPRouter);
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
 
 web.use('/uploads',
     express.static('uploads')

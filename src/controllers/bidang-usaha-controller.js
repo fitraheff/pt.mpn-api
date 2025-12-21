@@ -1,6 +1,10 @@
 import {
     getAllBU,
     getBUById,
+<<<<<<< HEAD
+=======
+    countBUName,
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
     createBU,
     updateBU,
     deleteBU
@@ -95,6 +99,7 @@ export const getPotoBUById = async (req, res) => {
 export const createBidangUsaha = async (req, res) => {
     try {
         const data = await validate(validationBU, req.body);
+<<<<<<< HEAD
         const poto = req.file ? req.file.path : null;
 
         // Mengambil data dari body request
@@ -113,6 +118,33 @@ export const createBidangUsaha = async (req, res) => {
     } catch (error) {
         if (req.file) { fs.unlink(req.file.path, () => { }); } //ditambahkan untuk menghapus file jika terjadi error
         // console.error(error);
+=======
+
+        const CountBU = await countBUName(data.nama_BUsaha);
+
+        if (CountBU > 0) {
+            if (req.file) fs.unlinkSync(req.file.path);
+
+            return res.status(400).json({
+                message: "Nama bidang usaha sudah terdaftar, silakan gunakan nama lain."
+            });
+        }
+
+        const poto = req.file ? req.file.path : null;
+
+        const BU = await createBU({
+            nama_BUsaha: data.nama_BUsaha,
+            deskripsi: data.deskripsi || null,
+            poto: poto || null
+        });
+
+        // Mengirim response sukses
+        return res.status(201).json(BU);
+
+    } catch (error) {
+        if (req.file) { fs.unlink(req.file.path, () => { }); }
+
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         return res.status(400).json({
             message: error.message
         });
@@ -122,6 +154,7 @@ export const createBidangUsaha = async (req, res) => {
 // UPDATE
 export const updateBidangUsaha = async (req, res) => {
     try {
+<<<<<<< HEAD
         // Mengambil id dari URL
         const id = req.params.id;
 
@@ -130,11 +163,32 @@ export const updateBidangUsaha = async (req, res) => {
         // const { nama_BUsaha, deskripsi } = req.body;
 
         // Memanggil service untuk update data
+=======
+        const id = req.params.id;
+        const data = await validate(validationBU, req.body);
+        const CountBU = await countBUName(data.nama_BUsaha);
+
+        if (CountBU > 0) {
+            if (req.file) fs.unlinkSync(req.file.path);
+
+            return res.status(400).json({
+                message: "Nama bidang usaha sudah terdaftar, silakan gunakan nama lain."
+            });
+        }
+
+        if (!data || !data.nama_BUsaha) {
+            return res.status(400).json({
+                message: "Gagal memproses data."
+            });
+        }
+
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         const BU = await updateBU(id, {
             nama_BUsaha: data.nama_BUsaha,
             deskripsi: data.deskripsi || null,
         });
 
+<<<<<<< HEAD
         // Mengirim response data yang sudah di-update
         return res.json(BU);
     } catch (error) {
@@ -144,6 +198,26 @@ export const updateBidangUsaha = async (req, res) => {
         if (error.code === 'P2025') {
             return res.status(404).json({ message: 'ID Bidang Usaha tidak ditemukan!!' });
         }
+=======
+        return res.json({
+            message: "Update Berhasil",
+            data: BU
+        });
+
+    } catch (error) {
+        console.error("Error Detail:", error);
+
+        if (error.code === 'P2025') {
+            return res.status(404).json({ message: 'ID Bidang Usaha tidak ditemukan!!' });
+        }
+
+        if (error.code === 'P2002') {
+            return res.status(400).json({
+                message: `Nama Bidang Usaha '${req.body.nama_BUsaha}' sudah terdaftar, gunakan nama lain.`
+            });
+        }
+
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         return res.status(400).json({ message: error.message });
     }
 };
@@ -154,17 +228,26 @@ export const updatePotoBU = async (req, res) => {
         // Ambil ID dari parameter URL
         const id = req.params.id;
 
+<<<<<<< HEAD
         // Cek apakah data Bidang Usaha dengan ID tersebut ada
         const bUsaha = await getBUById(id); // update URL foto baru
+=======
+        const bUsaha = await getBUById(id);
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         if (!bUsaha) {
             return res.status(404).json({
                 message: "Data tidak ditemukan"
             });
         };
 
+<<<<<<< HEAD
         let dataUpdate = {}; // object kosong untuk data update
 
         // Jika user mengirim file foto
+=======
+        let dataUpdate = {};
+
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         if (req.file) {
             dataUpdate.poto = `/uploads/${req.file.filename}`;
         }
@@ -196,6 +279,7 @@ export const updatePotoBU = async (req, res) => {
 // DELETE
 export const deleteBidangUsaha = async (req, res) => {
     try {
+<<<<<<< HEAD
         // Mengambil id dari URL
         const id = req.params.id;
 
@@ -207,6 +291,12 @@ export const deleteBidangUsaha = async (req, res) => {
     } catch (error) {
         // console.error(error);
         // Jika ID tidak ditemukan di database
+=======
+        const id = req.params.id;
+        await deleteBU(id);
+        return res.json({ message: 'Bidang Usaha telah di hapus' });
+    } catch (error) {
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         if (error.code === 'P2025') {
             return res.status(404).json({ message: 'Bidang Usaha tidak ditemukan!!' });
         }
@@ -217,6 +307,7 @@ export const deleteBidangUsaha = async (req, res) => {
 // DELETE FOTO 
 export const deletePotoBU = async (req, res) => {
     try {
+<<<<<<< HEAD
         // Mengambil id dari URL
         const id = req.params.id;
 
@@ -224,6 +315,10 @@ export const deletePotoBU = async (req, res) => {
         const bUsaha = await getBUById(id);
 
         // Jika data tidak ditemukan atau tidak punya poto
+=======
+        const id = req.params.id;
+        const bUsaha = await getBUById(id);
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
         if (!bUsaha || !bUsaha.poto) {
             return res.status(404).json({
                 message: "Foto Bidang Usaha tidak ditemukan"
@@ -267,4 +362,8 @@ export const BUController = {
     updatePotoBU,
     deleteBidangUsaha,
     deletePotoBU
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce

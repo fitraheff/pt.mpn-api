@@ -18,7 +18,11 @@ model User {
   email     String    @unique @db.VarChar(255)
   password  String    @db.VarChar(255) 
   role      Role      @default(ADMIN)
+<<<<<<< HEAD
   telp      Int  
+=======
+  telp      String    @db.VarChar(15)
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
   token     String?   @db.VarChar(100)  
 
   testimonies Testimoni[]
@@ -34,7 +38,11 @@ model User {
 
 model Bidang_Usaha {
   id_BUsaha        String    @id @default(uuid())
+<<<<<<< HEAD
   nama_BUsaha      String    @db.VarChar(225)
+=======
+  nama_BUsaha      String    @unique @db.VarChar(225)
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
   deskripsi        String?   @db.Text
   poto             String?   @db.Text
 
@@ -49,6 +57,10 @@ model Jenis_Usaha {
   nama_jenis    String    @db.VarChar(250)
   deskripsi     String
   foto          String
+<<<<<<< HEAD
+=======
+  status        String
+>>>>>>> 0df5a1fcd71c54d9bafeaba68dc6cf0c442649ce
 
   bidangUsahaId String
   bidang_usaha  Bidang_Usaha @relation(fields: [bidangUsahaId], references: [id_BUsaha], onDelete: Cascade)
