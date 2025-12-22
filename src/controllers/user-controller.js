@@ -15,6 +15,7 @@ const login = async (req, res, next) => {
     try {
         const result = await userService.login(req.body, res);
         res.status(200).json({
+            message: "Login berhasil",
             data: result
         });
     } catch (e) {
@@ -83,7 +84,7 @@ const remove = async (req, res, next) => {
 // pake http-only cookie
 const logout = async (req, res, next) => {
     try {
-        const result = await userService.logout(res);
+        const result = await userService.logout(req.user, res);
         res.status(200).json(result);
     } catch (e) {
         next(e);

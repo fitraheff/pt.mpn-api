@@ -57,6 +57,7 @@ const login = async (request, res) => {
             id: true,
             name: true,
             email: true,
+            telp: true,
             password: true,
             role: true
         }
@@ -91,6 +92,7 @@ const login = async (request, res) => {
             id: user.id,
             name: user.name,
             email: user.email,
+            telp: user.telp,
             role: user.role,
         },
     };
@@ -222,11 +224,20 @@ const remove = async (id) => {
 // }
 
 // pake http-only cookie
-const logout = async (res) => {
+const logout = async (req, res) => {
+    const user = req;
 
     res.clearCookie("token");
 
-    return { message: "Logged out" };
+    return { 
+        message: "Logged out", 
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            telp: user.telp,
+        }
+    };
 };
 
 
